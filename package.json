@@ -1,0 +1,38 @@
+{
+  "name": "ion-time-picker",
+  "version": "0.0.2",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Leo1305Pineda/ion-time-picker.git"
+  },
+  "author": {
+    "name": "Leonardo Pineda",
+    "email": "leo1305pineda@gmail.com"
+  },
+  "keywords": [
+    "ionic",
+    "time"
+  ],
+  "scripts": {
+    "ng": "ng",
+    "serve": "ng serve -o",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "start": "ionic build --prod --build-optimizer --vendor-chunk=true && node server.js",
+    "copy:readme": "cp README.md ./dist/ion-time-picker/README.md",
+    "copy:license": "cp LICENSE ./dist/ion-time-picker/LICENSE",
+    "build:lib": "ng build ion-time-picker --prod",
+    "publish:lib": "npm run build:lib && cd dist/ion-time-picker && npm publish"
+  },
+  "private": false,
+  "peerDependencies": {
+    "@angular/common": "^10.0.14",
+    "@angular/core": "^10.0.14"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "moment": "^2.24.0"
+  }
+}
