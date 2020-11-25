@@ -13,10 +13,10 @@ const moment = _moment;
 })
 export class TimePickerModalComponent {
 
-  @ViewChild('sliderHours') sliderHours: IonSlides;
-  @ViewChild('sliderMinutes') sliderMinutes: IonSlides;
-  @ViewChild('sliderSeconds') sliderSeconds: IonSlides;
-  @ViewChild('sliderMeridian') sliderMeridian: IonSlides;
+  @ViewChild('sliderHours', { static: false, read: IonSlides }) protected sliderHours: IonSlides;
+  @ViewChild('sliderMinutes', { static: false, read: IonSlides }) protected sliderMinutes: IonSlides;
+  @ViewChild('sliderSeconds', { static: false, read: IonSlides }) protected sliderSeconds: IonSlides;
+  @ViewChild('sliderMeridian', { static: false, read: IonSlides }) protected sliderMeridian: IonSlides;
 
   hoursArray: any = [];
   minutesArray: any = [];
@@ -76,6 +76,20 @@ export class TimePickerModalComponent {
   ionViewDidEnter() {
     // this.inItTimePicker().subscribe();
     // this.inItTimePicker();
+    this.updateSlide(this.sliderHours);
+    this.updateSlide(this.sliderMinutes);
+    this.updateSlide(this.sliderSeconds);
+    this.updateSlide(this.sliderMeridian);
+  }
+
+  updateSlide(slides: IonSlides, i = 0) {
+    if (slides) {
+      slides.update();
+    } else if (i < 20) {
+      setTimeout(() => {
+        this.updateSlide(slides, i);
+      }, 500);
+    }
   }
 
   inItTimePicker(): Observable<any> {
