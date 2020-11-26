@@ -67,21 +67,8 @@ timePickerObj = {
     (clickTime)="time = $event"
 ></ion-time-picker>
 ```
-
-## Events
-
-```html
-<ion-img
-    #elRef
-    [url]="image"
-    [customCache]="{ fallbackUrl: '/assets/img/bienvenida.png', cache_expire: {time: n.component?.expire_subimage, data: data } }"
-    (onExpireCache)="onExpireCache($event, elRef)"
-    (ionImgDidLoad)="ionImgDidLoad($event)"
-    (ionError)="ionError($event)"
-></ion-img>
-```
 ## Credits to
-[ionic-timepicker](https://github.com/logisticinfotech/ionic-timepicker)
+[ionic-timepicker](https://www.npmjs.com/package/@logisticinfotech/ionic-timepicker)
 Documentation [this link](https://www.logisticinfotech.com/blog/ionic-timepicker-component)
 
 
