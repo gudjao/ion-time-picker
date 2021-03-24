@@ -3,6 +3,7 @@ import { NavParams, ModalController, IonSlides } from '@ionic/angular';
 import { Observable } from 'rxjs';
 
 import * as _moment from 'moment';
+import { IonTimePickerService } from '../ion-time-picker.service';
 const moment = _moment;
 
 @Component({
@@ -67,19 +68,46 @@ export class TimePickerModalComponent {
   isReady = false;
 
   constructor(
-    private navParams: NavParams,
     private modalCtrl: ModalController,
+    private ionTimePickerService: IonTimePickerService,
   ) {
-    this.inItTimePicker().subscribe();
+    this.mainObj = this.initTimePickerObject(this.ionTimePickerService.objConfig);
+    this.initialSlide();
+    setTimeout(() => {
+      this.inItTimePicker();
+    }, 50);
   }
 
-  ionViewDidEnter() {
-    // this.inItTimePicker().subscribe();
-    // this.inItTimePicker();
-    this.updateSlide(this.sliderHours);
-    this.updateSlide(this.sliderMinutes);
-    this.updateSlide(this.sliderSeconds);
-    this.updateSlide(this.sliderMeridian);
+  initialSlide() {
+    const timeFormat = this.mainObj.timeFormat;
+    if (timeFormat.indexOf('HH') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('HH'));
+    } else if (timeFormat.indexOf('H') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('H'));
+    } else if (timeFormat.indexOf('hh') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('hh') - 1);
+    } else if (timeFormat.indexOf('h') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('h') - 1);
+    } else if (timeFormat.indexOf('kk') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('kk') - 1);
+    } else if (timeFormat.indexOf('k') >= 0) {
+      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('k') - 1);
+    }
+    if (timeFormat.indexOf('mm') >= 0) {
+      this.slideOptsMinutes.initialSlide = Number(this.momentObj.format('mm'));
+    } else if (timeFormat.indexOf('m') >= 0) {
+      this.slideOptsMinutes.initialSlide = Number(this.momentObj.format('m'));
+    }
+    if (timeFormat.indexOf('ss') >= 0) {
+      this.slideOptsSeconds.initialSlide = Number(this.momentObj.format('ss'));
+    } else if (timeFormat.indexOf('s') >= 0) {
+      this.slideOptsSeconds.initialSlide = Number(this.momentObj.format('s'));
+    }
+    if (timeFormat.indexOf('a') >= 0) {
+      this.slideOptsMeridian.initialSlide = this.momentObj.format('a') === 'am' ? 0 : 1;
+    } else if (timeFormat.indexOf('A') >= 0) {
+      this.slideOptsMeridian.initialSlide = this.momentObj.format('A') === 'AM' ? 0 : 1;
+    }
   }
 
   updateSlide(slides: IonSlides, i = 0) {
@@ -88,30 +116,20 @@ export class TimePickerModalComponent {
     } else if (i < 20) {
       setTimeout(() => {
         this.updateSlide(slides, i);
-      }, 500);
+      }, 50);
     }
   }
 
-  inItTimePicker(): Observable<any> {
-    const myObservable = new Observable(observer => {
-      if (this.navParams.get('selectedTime')) {
-        // //console.log('Selected time =>', this.navParams.get('selectedTime'));
-        this.selectedTime = this.navParams.get('selectedTime');
-      }
-      this.mainObj = this.initTimePickerObject(this.navParams.get('objConfig'));
-
-      this.setHoursArray(this.mainObj.timeFormat);
-      this.setMinutesArray(this.mainObj.timeFormat);
-      this.setSecondsArray(this.mainObj.timeFormat);
-      this.setMeridianArray(this.mainObj.timeFormat);
-
-      // setTimeout(() => {
-      this.isReady = true;
-      // }, 100);
-
-      observer.complete();
-    });
-    return myObservable;
+  inItTimePicker() {
+    this.setHoursArray(this.mainObj.timeFormat);
+    this.setMinutesArray(this.mainObj.timeFormat);
+    this.setSecondsArray(this.mainObj.timeFormat);
+    this.setMeridianArray(this.mainObj.timeFormat);
+    this.updateSlide(this.sliderHours);
+    this.updateSlide(this.sliderMinutes);
+    this.updateSlide(this.sliderSeconds);
+    this.updateSlide(this.sliderMeridian);
+    this.isReady = true;
   }
 
 
@@ -155,15 +173,17 @@ export class TimePickerModalComponent {
 
   // initialize timepicker Object
   initTimePickerObject(config) {
+    const format = config.timeFormat ? config.timeFormat : 'hh:mm A';
+    this.selectedTime = this.ionTimePickerService.selectedTime || moment().format(format);
     if (config.inputTime && !this.selectedTime) {
       this.selectedTime = config.inputTime;
     }
-
     const objConfig: any = {};
+    objConfig.inputTime = this.selectedTime;
     objConfig.momentLocale = config.momentLocale ? config.momentLocale : 'en-US';
     moment.locale(objConfig.momentLocale);
 
-    objConfig.timeFormat = config.timeFormat ? config.timeFormat : 'hh:mm A';
+    objConfig.timeFormat = format;
     if (typeof (this.selectedTime) === 'string') {
       this.momentObj = this.selectedTime ?
         moment(this.selectedTime, objConfig.timeFormat) :
@@ -267,29 +287,17 @@ export class TimePickerModalComponent {
     const obj = moment().startOf('date');
     if (timeFormat.indexOf('HH') >= 0) {
       this.hoursArray = this.initHoursArray(obj, 23, 'HH');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('HH'));
-
     } else if (timeFormat.indexOf('H') >= 0) {
       this.hoursArray = this.initHoursArray(obj, 23, 'H');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('H'));
-
     } else if (timeFormat.indexOf('hh') >= 0) {
       this.hoursArray = this.initHoursArray(obj.add(1, 'hours'), 11, 'hh');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('hh') - 1);
-
     } else if (timeFormat.indexOf('h') >= 0) {
       this.hoursArray = this.initHoursArray(obj.add(1, 'hours'), 11, 'h');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('h') - 1);
-
     } else if (timeFormat.indexOf('kk') >= 0) {
       this.hoursArray = this.initHoursArray(obj.add(1, 'hours'), 23, 'kk');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('kk') - 1);
-
     } else if (timeFormat.indexOf('k') >= 0) {
       this.hoursArray = this.initHoursArray(obj.add(1, 'hours'), 23, 'k');
-      this.slideOptsHours.initialSlide = Number(this.momentObj.locale('en').format('k') - 1);
     }
-    // //console.log('hours array =>', this.hoursArray);
   }
 
   // Initialize hours array
@@ -306,12 +314,9 @@ export class TimePickerModalComponent {
   setMinutesArray(timeFormat) {
     if (timeFormat.indexOf('mm') >= 0) {
       this.minutesArray = this.initMinutesArray('mm');
-      this.slideOptsMinutes.initialSlide = Number(this.momentObj.format('mm'));
     } else if (timeFormat.indexOf('m') >= 0) {
       this.minutesArray = this.initMinutesArray('m');
-      this.slideOptsMinutes.initialSlide = Number(this.momentObj.format('m'));
     }
-    // //console.log('minutes array =>', this.minutesArray);
   }
 
   // initialize minutes array
@@ -329,12 +334,9 @@ export class TimePickerModalComponent {
   setSecondsArray(timeFormat) {
     if (timeFormat.indexOf('ss') >= 0) {
       this.secondsArray = this.initSecondsArray('ss');
-      this.slideOptsSeconds.initialSlide = Number(this.momentObj.format('ss'));
     } else if (timeFormat.indexOf('s') >= 0) {
       this.secondsArray = this.initSecondsArray('s');
-      this.slideOptsSeconds.initialSlide = Number(this.momentObj.format('s'));
     }
-    // //console.log('seconds array =>', this.secondsArray);
   }
 
   // initialize seconds array
@@ -356,23 +358,6 @@ export class TimePickerModalComponent {
       this.meridianArray.push(obj.format(format));
       this.meridianArray.push(obj.add(12, 'hours').format(format));
     }
-    // //console.log('meridian array =>', this.meridianArray);
-
-    if (timeFormat.indexOf('a') >= 0) {
-      this.slideOptsMeridian.initialSlide = this.momentObj.format('a') === 'am' ? 0 : 1;
-    } else if (timeFormat.indexOf('A') >= 0) {
-      this.slideOptsMeridian.initialSlide = this.momentObj.format('A') === 'AM' ? 0 : 1;
-    }
-    this.updatesliderMeridian();
-  }
-
-  updatesliderMeridian() {
-    if (!!this.sliderMeridian) {
-      this.sliderMeridian.update();
-    } else {
-      setTimeout(() => {
-        this.updatesliderMeridian();
-      }, 100);
-    }
+    this.updateSlide(this.sliderMeridian);
   }
 }

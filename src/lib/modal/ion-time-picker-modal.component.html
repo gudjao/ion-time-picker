@@ -17,7 +17,7 @@
     <ion-row>
       <ion-col>
         <ion-slides #sliderHours pager="false" [options]="slideOptsHours" (ionSlideWillChange)="onChangeHoursSlide($event)">
-          <ion-slide *ngFor="let hour of hoursArray; let i = index;" class="tp-default-slide">
+          <ion-slide *ngFor="let hour of hoursArray; let i = index;" translate="no" class="tp-default-slide">
             {{ hour }}
           </ion-slide>
         </ion-slides>
@@ -28,7 +28,7 @@
       </ion-col>
       <ion-col *ngIf="minutesArray?.length > 0">
         <ion-slides #sliderMinutes pager="false" [options]="slideOptsMinutes" (ionSlideWillChange)="onChangeMinutesSlide($event)">
-          <ion-slide *ngFor="let minute of minutesArray; let i = index;" class="tp-default-slide">
+          <ion-slide *ngFor="let minute of minutesArray; let i = index;" translate="no" class="tp-default-slide">
             {{ minute }}
           </ion-slide>
         </ion-slides>
@@ -39,7 +39,7 @@
       </ion-col>
       <ion-col *ngIf="secondsArray?.length > 0">
         <ion-slides #sliderSeconds pager="false" [options]="slideOptsSeconds" (ionSlideWillChange)="onChangeSecondsSlide($event)">
-          <ion-slide *ngFor="let second of secondsArray; let i = index ;" class="tp-default-slide">
+          <ion-slide *ngFor="let second of secondsArray; let i = index ;" translate="no" class="tp-default-slide">
             {{ second }}
           </ion-slide>
         </ion-slides>
@@ -50,7 +50,7 @@
       </ion-col>
       <ion-col *ngIf="meridianArray?.length > 0">
         <ion-slides #sliderMeridian pager="false" [options]="slideOptsMeridian" (ionSlideWillChange)="onChangeMeridianSlide($event)">
-          <ion-slide *ngFor="let meridian of meridianArray; let i = index ;" class="tp-default-slide">
+          <ion-slide *ngFor="let meridian of meridianArray; let i = index ;" translate="no" class="tp-default-slide">
             {{ meridian }}
           </ion-slide>
         </ion-slides>

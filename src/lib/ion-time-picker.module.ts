@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TimePickerComponent } from './ion-time-picker.component';
 import { TimePickerModalComponent } from './modal/ion-time-picker-modal.component';
+import { IonTimePickerService } from './ion-time-picker.service';
 
 @NgModule({
     imports: [
@@ -28,6 +29,9 @@ import { TimePickerModalComponent } from './modal/ion-time-picker-modal.componen
     ],
     schemas: [
         CUSTOM_ELEMENTS_SCHEMA
+    ],
+    providers: [
+        IonTimePickerService
     ]
 })
 export class IonTimePickerModule { }

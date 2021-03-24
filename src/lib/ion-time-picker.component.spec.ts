@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimePickerComponent } from './time-picker.component';
+import { TimePickerComponent } from './ion-time-picker.component';
 
 describe('TimePickerComponent', () => {
   let component: TimePickerComponent;

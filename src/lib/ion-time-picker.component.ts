@@ -1,6 +1,7 @@
 import { Component, OnInit, forwardRef, Input, ElementRef, Renderer2, OnChanges, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { IonTimePickerService } from './ion-time-picker.service';
 import { TimePickerModalComponent } from './modal/ion-time-picker-modal.component';
 
 const noop = () => {
@@ -28,7 +29,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
     closeIcon;
     private innerValue: any = '';
     selectedTime: any;
-    // value: any;
+    isModal: boolean;
 
     // Placeholders for the callbacks which are later provided
     // by the Control Value Accessor
@@ -38,6 +39,7 @@ export class TimePickerComponent implements OnInit, OnChanges {
     constructor(
         public modalCtrl: ModalController,
         public el: ElementRef,
+        private ionTimePickerService: IonTimePickerService,
         public renderer: Renderer2) { }
 
     // get accessor
@@ -104,29 +106,26 @@ export class TimePickerComponent implements OnInit, OnChanges {
 
     // open time picker
     async openTimePicker(value) {
-        // //console.log('open time picker modal calls');
-        if (this.readOnly) {
+        if (this.readOnly || this.isModal) {
             return false;
         }
-        if (value) {
-            this.selectedTime = value;
-        }
-
+        this.selectedTime = value; 
+        this.ionTimePickerService.objConfig = this.inputTimeConfig;
+        this.ionTimePickerService.selectedTime = this.selectedTime;
+        this.isModal = true;
         const myTimePickerModal = await this.modalCtrl.create({
             component: TimePickerModalComponent,
-            cssClass: 'timepicker',
-            componentProps: { objConfig: this.inputTimeConfig, selectedTime: this.selectedTime }
+            cssClass: 'timepicker'
         });
-        await myTimePickerModal.present();
-
         myTimePickerModal.onDidDismiss().then((data) => {
-            // //console.log(data);
+            this.isModal = false;
             if (data.data && data.data.time) {
                 this.selectedTime = data.data.time;
                 this.value = data.data.time;
                 this.clickTime.emit(data.data.time);
             }
         });
+        return await myTimePickerModal.present();
     }
 
     // Set touched on blur
