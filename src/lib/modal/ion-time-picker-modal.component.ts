@@ -227,7 +227,8 @@ export class TimePickerModalComponent {
   // set time in modal dismiss method
   async setIonicTimePickerTime() {
     const modal = await this.modalCtrl.getTop();
-    this.selectedTime = this.setTimeInMomentObject();
+    const selectedTime = this.setTimeInMomentObject();
+    this.selectedTime = selectedTime === 'Invalid date' ? this.selectedTime : selectedTime;
     modal.dismiss({ time: (this.selectedTime) });
   }
 
