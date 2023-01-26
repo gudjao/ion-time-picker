@@ -1,61 +1,61 @@
 :host {
-    ion-header {
-        height: 48px;
+    // ion-header {
+    //     height: 48px;
 
-        ion-toolbar {
-            --background: var(--ion-color-colorbase);
-            height: 100%;
-            align-items: center;
-            display: flex;
-            color: #fff;
+    //     ion-toolbar {
+    //         --background: var(--ion-color-colorbase);
+    //         height: 100%;
+    //         align-items: center;
+    //         display: flex;
+    //         color: #fff;
 
-            ion-title {
-                font-size: 20px;
-                font-weight: bold;
-                text-align: center;
+    //         ion-title {
+    //             font-size: 20px;
+    //             font-weight: bold;
+    //             text-align: center;
 
-                @media (min-width: 768px) {
-                    font-size: 22px;
-                }
-            }
-        }
-    }
+    //             @media (min-width: 768px) {
+    //                 font-size: 22px;
+    //             }
+    //         }
+    //     }
+    // }
 
-    ion-footer {
-        height: 50px !important;
+    // ion-footer {
+    //     height: 50px !important;
 
-        ion-toolbar {
-            --min-height: 100%;
-            --border-width: 0;
-            --padding-top: 0px;
-            --padding-bottom: 0px;
-            --padding-start: 0px;
-            --padding-end: 0px;
+    //     ion-toolbar {
+    //         --min-height: 100%;
+    //         --border-width: 0;
+    //         --padding-top: 0px;
+    //         --padding-bottom: 0px;
+    //         --padding-start: 0px;
+    //         --padding-end: 0px;
 
-            // .toolbar-container {
-            //     height: 100%;
-            // }
+    //         // .toolbar-container {
+    //         //     height: 100%;
+    //         // }
 
-            .dp-btn-set-close-in-reverse {
-                flex-direction: row-reverse;
-            }
+    //         .dp-btn-set-close-in-reverse {
+    //             flex-direction: row-reverse;
+    //         }
 
-            ion-button {
-                --border-radius: 0;
-                height: 48px !important;
-                margin: 0;
+    //         ion-button {
+    //             --border-radius: 0;
+    //             height: 48px !important;
+    //             margin: 0;
 
-                &:focus {
-                    outline: none;
-                }
+    //             &:focus {
+    //                 outline: none;
+    //             }
 
-                &.activated {
-                    --background-activated: #fff;
-                    --color-activated: white
-                }
-            }
-        }
-    }
+    //             &.activated {
+    //                 --background-activated: #fff;
+    //                 --color-activated: white
+    //             }
+    //         }
+    //     }
+    // }
 
     .swiper-slide-active {
         color: var(--ion-color-colorbase) !important;
